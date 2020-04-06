@@ -1,0 +1,37 @@
+{% extends "main/template.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+<br>
+
+<div class="container">
+  <h3>Handy Usage Guidelines and Acceptance</h3>
+  <ul>
+    <li>There is no warranty offered as a part of this application, nor are there any guarantees made as a part of its usage.</li>
+    <li>The tool does not contain any features that are implicitly disruptive, however we recommend checking provider policies regarding scanning before using it.</li>
+    <li>This tool is a work in progress, and enhancements will be made often. Please check versions and always run the latest one.</li>
+    <li>If you'd like to suggest enhancements, please feel free to open pull requests or issues.</li>
+  </ul>
+</div>
+
+<div class="container">
+  <form action="{% url 'main' %}">
+    <button type="submit" class="btn btn-primary">Home</button>
+  </form>
+</div>
+
+{% if user.is_authenticated %}
+{% else %}
+
+<div class="container">
+  <form action="{% url 'login' %}">
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

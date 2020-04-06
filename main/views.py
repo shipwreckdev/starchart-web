@@ -3,10 +3,6 @@ from .lib import ec2 as ec2
 from .lib import scan as Scanner
 
 
-def main(request):
-    return render(request, 'main/main.html')
-
-
 def about(request):
     return render(request, 'main/about.html')
 
@@ -15,14 +11,14 @@ def aws(request):
     return render(request, 'main/aws.html')
 
 
-def settings(request):
-    return render(request, 'main/settings.html')
-
-
 def inspect(request):
     instances = ec2.Instances()
 
     return render(request, 'main/inspect.html', {'instances': instances})
+
+
+def main(request):
+    return render(request, 'main/main.html')
 
 
 def scan(request):
@@ -49,3 +45,7 @@ def scan(request):
     report = Scanner.Scan(ips, nmap_options, port_range)
 
     return render(request, 'main/scan.html', {'instances': instances, 'scan_type': scan_type, 'port_range': port_range, 'nmap_options': nmap_options, 'report': report})
+
+
+def usage(request):
+    return render(request, 'main/usage.html')

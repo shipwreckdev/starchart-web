@@ -4,12 +4,22 @@
 
 {% block content %}
 
-<!-- templates/registration/login.html -->
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Login</button>
-</form>
+<br>
+
+<div class="container">
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+  <br>
+  <br>
+</div>
+
+<div class="container">
+  <small>Use of this application is subject to acceptance of <a href="{% url 'usage' %}">usage</a> guidelines.</small><br>
+  <small>We encourage you to review them before logging in.</small>
+</div>
 
 {% endblock %}

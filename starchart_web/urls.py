@@ -28,6 +28,7 @@ urlpatterns = [
     path('aws/', views.aws, name='aws'),
     path('inspect/', views.inspect, name='inspect'),
     path('scan/', views.scan, name='scan'),
+    path('usage/', views.usage, name='usage'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
