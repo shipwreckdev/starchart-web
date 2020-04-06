@@ -42,7 +42,7 @@ def scan(request):
 
         for i in instances:
             ips.append(i['ip'])
-    
+
     nmap_options = request.GET.get('nmap_options')
     port_range = request.GET.get('port_range')
 
