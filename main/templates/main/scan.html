@@ -1,0 +1,81 @@
+{% extends "main/template.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<p><h4>The following AWS EC2 instances will be scanned based on the options chosen.</p>
+<p><h5>Look over them carefully.</h5></p>
+
+<p><h6><b>Scan Type:</b> <span class="badge badge-info">{{ scan_type }}</span></h6></p>
+<p><h6><b>Port Range:</b> <span class="badge badge-info">{{ port_range }}</span></h6></p>
+<p><h6><b>NMAP Options:</b> <span class="badge badge-info">{{ nmap_options }}</span></h6></p>
+
+<!--
+<h4>Instances:</h4>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Instance ID</th>
+      <th scope="col">IP</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in instances %}
+      <tr>
+        <td>{{ i.instance }}</td>
+        <td>{{ i.ip }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+-->
+
+<h4>Results:</h4>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Address</th>
+      <th scope="col">Ports</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in report %}
+      <tr>
+        <td>{{ r.address }}</td>
+        {% if r.details.0.noports %}
+        <td>None</td>
+        {% else %}
+        <td>{{ r.details.0.port_info.0.service }}/{{ r.details.0.port_info.0.port }}/{{ r.details.0.port_info.0.state }}</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="container">
+  <form action="{% url 'aws' %}">
+    <button type="submit" class="btn btn-warning">Done</button>
+  </form>
+  <br>
+  <form action="{% url 'main' %}">
+    <button type="submit" class="btn btn-secondary">Home</button>
+  </form>
+</div>
+
+{% else %}
+
+<div class="container">
+  <p>You have to be logged in to view this page.</p>
+  <form action="{% url 'login' %}">
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

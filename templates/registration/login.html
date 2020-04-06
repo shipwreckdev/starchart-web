@@ -1,0 +1,15 @@
+{% extends "registration/template.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- templates/registration/login.html -->
+<h2>Login</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+{% endblock %}

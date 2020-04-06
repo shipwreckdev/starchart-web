@@ -1,0 +1,55 @@
+{% extends "main/template.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<p>Use the following options to execute scans against your AWS account.</p>
+<p>If you'd simply prefer to get a list of instances with some detailed data to determine what would be subjected to a scan, use the Inspect option.</p>
+
+<div class="container">
+  <form action="{% url 'inspect' %}">
+    <button type="submit" class="btn btn-primary">Inspect</button>
+  </form>
+</div>
+<br>
+<div class="container">
+  <form action="{% url 'scan' %}">
+    <div class="form-group">
+      <label for="port_range">Port Range</label>
+      <input type="text" name="port_range" class="form-control" id="port_range" aria-describedby="port_range_help" required>
+      <small id="port_range_help" class="form-text text-muted">Can be a single port, comma separated list, or a range - 22, 22,80, 50-100, etc.</small>
+    </div>
+    <div class="form-group">
+      <label for="nmap_options">NMAP Options</label>
+      <input type="text" name="nmap_options" class="form-control" id="nmap_options" value="-sS -vv -Pn -T5" aria-describedby="nmap_options_help" required>
+      <small id="nmap_options_help" class="form-text text-muted">-sS -vv -Pn -T5</small>
+    </div>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active">
+        <input type="radio" name="public_ip" id="public_ip" autocomplete="off"> Public
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="private_ip" id="private_ip" autocomplete="off"> Private
+      </label>
+    </div>
+    <button type="submit" class="btn btn-danger">Search</button>
+    <br>
+    <small id="nmap_options_help" class="form-text text-muted">Note: To scan private IP addresses, you'll need private connectivity into the VPC(s) in question.</small>
+  </form>
+</div>
+
+{% else %}
+
+<div class="container">
+  <p>You have to be logged in to view this page.</p>
+  <form action="{% url 'login' %}">
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

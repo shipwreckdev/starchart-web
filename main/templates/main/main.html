@@ -1,0 +1,31 @@
+{% extends "main/template.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<div class="container">
+  <p>Choose a provider option below.</p>
+  <p>Once a provider is chosen, you'll be presented with different options for its use.</p>
+</div>
+
+<div class="container">
+  <form action="{% url 'aws' %}">
+    <button type="submit" class="btn btn-primary">AWS</button>
+  </form>
+</div>
+
+{% else %}
+
+<div class="container">
+  <p>You have to be logged in to view this page.</p>
+  <form action="{% url 'login' %}">
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}

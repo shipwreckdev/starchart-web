@@ -1,0 +1,57 @@
+{% extends "main/template.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<p><h2>Instances:</h2></p>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Instance ID</th>
+      <th scope="col">AMI</th>
+      <th scope="col">Source/Dest</th>
+      <th scope="col">VPC</th>
+      <th scope="col">Public IP</th>
+      <th scope="col">Private IP</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in instances %}
+      <tr>
+        <td>{{ i.instance }}</td>
+        <td>{{ i.image }}</td>
+        <td>{{ i.src_dest }}</td>
+        <td>{{ i.vpc }}</td>
+        <td>{{ i.public_ip }}</td>
+        <td>{{ i.private_ip }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="container">
+  <form action="{% url 'aws' %}">
+    <button type="submit" class="btn btn-primary">Return</button>
+  </form>
+  <br>
+  <form action="{% url 'main' %}">
+    <button type="submit" class="btn btn-secondary">Home</button>
+  </form>
+</div>
+
+{% else %}
+
+<div class="container">
+  <p>You have to be logged in to view this page.</p>
+  <form action="{% url 'login' %}">
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+
+{% endif %}
+
+{% endblock %}
