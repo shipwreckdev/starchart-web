@@ -6,56 +6,41 @@
 
 {% if user.is_authenticated %}
 
-<p><h4>The following AWS EC2 instances will be scanned based on the options chosen.</p>
-<p><h5>Look over them carefully.</h5></p>
+<div class="container">
+  <p><h4>Scan Results</p>
+    <p><h5>Supplied test settings:</h5></p>
+    <p><b>Scan Type:</b> <span class="badge badge-info">{{ scan_type }}</span></p>
+    <p><b>Port Range:</b> <span class="badge badge-info">{{ port_range }}</span></p>
+    <p><b>NMAP Options:</b> <span class="badge badge-info">{{ nmap_options }}</span></p>
+    <p><b>Scan complete at:</b> <span class="badge badge-info">{% now "SHORT_DATETIME_FORMAT" %}</span></p>
+</div>
 
-<p><h6><b>Scan Type:</b> <span class="badge badge-info">{{ scan_type }}</span></h6></p>
-<p><h6><b>Port Range:</b> <span class="badge badge-info">{{ port_range }}</span></h6></p>
-<p><h6><b>NMAP Options:</b> <span class="badge badge-info">{{ nmap_options }}</span></h6></p>
-
-<!--
-<h4>Instances:</h4>
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Instance ID</th>
-      <th scope="col">IP</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for i in instances %}
+<div class="container">
+  <table class="table table-hover">
+    <thead>
       <tr>
-        <td>{{ i.instance }}</td>
-        <td>{{ i.ip }}</td>
+        <th scope="col">Address</th>
+        <th scope="col">Ports</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
--->
-
-<h4>Results:</h4>
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Address</th>
-      <th scope="col">Ports</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for r in report %}
-      <tr>
-        <td>{{ r.address }}</td>
-        {% if r.details.0.noports %}
-        <td>None</td>
-        {% else %}
-        <td>{{ r.details.0.port_info.0.service }}/{{ r.details.0.port_info.0.port }}/{{ r.details.0.port_info.0.state }}</td>
-        {% endif %}
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for r in report %}
+        <tr>
+          <td>{{ r.address }}</td>
+          {% if r.details.0.noports %}
+          <td>None</td>
+          {% else %}
+          <td>{{ r.details.0.port_info.0.service }}/{{ r.details.0.port_info.0.port }}/{{ r.details.0.port_info.0.state }}</td>
+          {% endif %}
+        </tr>
+      {% empty %}
+        <tr>
+          <td>No instances found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 <div class="container">
   <form action="{% url 'aws' %}">

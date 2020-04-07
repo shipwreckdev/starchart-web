@@ -12,9 +12,15 @@ def aws(request):
 
 
 def inspect(request):
-    instances = ec2.Instances()
+    if request.GET.get('ec2'):
+        data = ec2.Instances()
+        resource_types = 'ec2'
 
-    return render(request, 'main/inspect.html', {'instances': instances})
+    if request.GET.get('vpc'):
+        data = []
+        resource_types = 'vpc'
+
+    return render(request, 'main/inspect.html', {'data': data, 'resource_types': resource_types})
 
 
 def main(request):

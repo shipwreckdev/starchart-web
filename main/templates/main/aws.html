@@ -6,15 +6,27 @@
 
 {% if user.is_authenticated %}
 
-<p>Use the following options to execute scans against your AWS account.</p>
-<p>If you'd simply prefer to get a list of instances with some detailed data to determine what would be subjected to a scan, use the Inspect option.</p>
+<div class="container">
+  <p>Use the following options to execute scans against your AWS account.</p>
+  <p>If you'd simply prefer to get a list of instances with some detailed data to determine what would be subjected to a scan, use the Inspect option.</p>
+</div>
 
 <div class="container">
   <form action="{% url 'inspect' %}">
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active">
+        <input type="radio" name="ec2" id="ec2" autocomplete="off"> EC2
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio" name="vpc" id="vpc" autocomplete="off"> VPCs
+      </label>
+    </div>
     <button type="submit" class="btn btn-primary">Inspect</button>
   </form>
 </div>
+
 <br>
+
 <div class="container">
   <form action="{% url 'scan' %}">
     <div class="form-group">
@@ -35,7 +47,7 @@
         <input type="radio" name="private_ip" id="private_ip" autocomplete="off"> Private
       </label>
     </div>
-    <button type="submit" class="btn btn-danger">Search</button>
+    <button type="submit" class="btn btn-danger">Scan</button>
     <br>
     <small id="nmap_options_help" class="form-text text-muted">Note: To scan private IP addresses, you'll need private connectivity into the VPC(s) in question.</small>
   </form>
