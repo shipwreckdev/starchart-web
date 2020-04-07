@@ -57,3 +57,16 @@ def InstancePublicIPs():
             continue
 
     return instance_scan_list
+
+
+#def VPCDetails():
+#    # Builds a list of VPC details.
+#
+#    vpcs = list(ec2.vpcs())
+#    vpc_details_list = []
+#
+#    for v in vpcs:
+#        vpc_details_list.append(dict({"id": v.id, "cidr_block": v.cidr_block}))
+#
+#    return vpc_details_list
+#
