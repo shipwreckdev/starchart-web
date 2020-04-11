@@ -2,6 +2,8 @@ import nmap
 
 
 def Scan(addresses, scan_args, port_range):
+    """Take the list of subject addresses and options and perform nmap scans against targets."""
+
     nm = nmap.PortScanner()
 
     report = []

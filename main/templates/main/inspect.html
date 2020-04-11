@@ -24,6 +24,8 @@
       {% if resource_types == 'vpc' %}
       <th scope="col">VPC ID</th>
       <th scope="col">CIDR Block</th>
+      <th scope="col">State</th>
+      <th scope="col">Instance Tenancy</th>
       {% endif %}
     </tr>
   </thead>
@@ -50,6 +52,8 @@
     <tr>
       <td>{{ i.id }}</td>
       <td>{{ i.cidr_block }}</td>
+      <td>{{ i.state }}</td>
+      <td>{{ i.instance_tenancy }}</td>
     </tr>
     {% endfor %}
     {% endif %}

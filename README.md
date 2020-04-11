@@ -11,6 +11,23 @@ Under the hood, `boto3` is used to identify qualifying instances in AWS. `python
 * `python3`
 * `django3`
 
+## Features
+
+Starchart provides an easy to use web interface that allows you to collect information from your AWS account.
+
+#### Current Resource Support
+
+* EC2 Instances
+* VPCs
+
+![starchart_vpc_info](https://github.com/shipwreckdev/starchart-web/blob/master/assets/sc_vpc_info.png)
+
+You can also run `nmap` scans against your instances.
+
+Output is provided within the UI.
+
+![starchart_scan_results](https://github.com/shipwreckdev/starchart-web/blob/master/assets/sc_scan_results.png)
+
 ## Authenticating to AWS
 
 Before deploying the tool, you'll need to create a few resources within your AWS account:
@@ -18,6 +35,8 @@ Before deploying the tool, you'll need to create a few resources within your AWS
 * An IAM user called `starchart-web` with programmatic access credentials.
 * An IAM role called `starchart-web` that provides the tool with enough credentials to get EC2 information.
 * An IAM policy for the `starchart-web` user called `starchart-web-assume-role` that allows the user to assume the role `starchart-web`.
+
+These resources are provided here for convenience.
 
 `starchart-web-assume-role` IAM policy:
 
@@ -39,12 +58,13 @@ Before deploying the tool, you'll need to create a few resources within your AWS
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Action": [
-                "ec2:DescribeInstanceAttribute",
-                "ec2:DescribeInstanceStatus",
-                "ec2:DescribeInstances"
-            ],
             "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeInstanceStatus"
+                "ec2:DescribeVpcs"
+            ],
             "Resource": "*"
         }
     ]
@@ -70,7 +90,11 @@ The trust relationship policy for the role should allow the `starchart-web` user
 
 Finally, attach the `starchart-web-assume-role` permissions policy to the `starchart-web` user.
 
-Take the programmatic credentials for the `starchart-web` user and make sure they are set as environment variables wherever the tool is being run.
+The `starchart-web` user will need programmatic access credentials. Set these matching the environment variables below on the host where the tool will be running, along with the AWS region and the AWS account ID.
+
+These can be provided via `docker-compose.yaml` if running locally, or using something like Fargate, ECS, or EKS if running there.
+
+All of these variables should be set:
 
 `AWS_ACCESS_KEY_ID`
 `AWS_SECRET_ACCESS_KEY`
@@ -79,4 +103,16 @@ Take the programmatic credentials for the `starchart-web` user and make sure the
 
 ## Running the App
 
-Use the provided `Dockerfile` and `docker-compose.yaml` file to run the app. Provide the four env vars listed above in `docker-compose.yaml` and run `docker-compose up`.
+#### Locally
+
+Use the provided `Dockerfile` and `docker-compose.yaml` file to run the app.
+
+Provide the four env vars listed above in `docker-compose.yaml` and run `docker-compose up`.
+
+#### Inside Your AWS Account
+
+Run the tool in Fargate, ECS, or EKS. You can also optionally run the tool on an EC2 instance that has `nmap` installed and the aforementioned variables set.
+
+## Incoming Updates
+
+* Terraform for creating resources.

@@ -24,7 +24,13 @@ def inspect(request):
         resource_types = 'ec2'
 
     if request.GET.get('vpc'):
-        data = []
+        idata = ec2.Instances()
+
+        for d in idata:
+            vpc_list = []
+            vpc_list.append(d['vpc'])
+
+        data = ec2.VPCDetails(vpc_list)
         resource_types = 'vpc'
 
     return render(request, 'main/inspect.html', {'data': data, 'resource_types': resource_types})
