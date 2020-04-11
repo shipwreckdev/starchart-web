@@ -1,16 +1,22 @@
 import boto3
 import os
+from .assume_role import assume_aws_role
 
-# AWS Credentials
-ACCESS_KEY = os.getenv("ACCESS_KEY")
-REGION = os.getenv("AWS_REGION")
-SECRET_KEY = os.getenv("SECRET_KEY")
+account_id = os.getenv("AWS_ACCOUNT_ID")
+role_name = "starchart-web"
+
+# Fetch credentials using STS.
+
+credentials = assume_aws_role(account_id, role_name)
+
+# Establish EC2 resource.
 
 ec2 = boto3.resource(
     'ec2',
-    aws_access_key_id=ACCESS_KEY,
-    aws_secret_access_key=SECRET_KEY,
-    region_name=REGION,
+    aws_access_key_id=credentials['AccessKeyId'],
+    aws_secret_access_key=credentials['SecretAccessKey'],
+    aws_session_token=credentials['SessionToken'],
+    region_name=os.getenv('AWS_REGION')
 )
 
 
@@ -59,7 +65,7 @@ def InstancePublicIPs():
     return instance_scan_list
 
 
-#def VPCDetails():
+# def VPCDetails():
 #    # Builds a list of VPC details.
 #
 #    vpcs = list(ec2.vpcs())

@@ -27,10 +27,16 @@
       {% for r in report %}
         <tr>
           <td>{{ r.address }}</td>
+          <td></td>
           {% if r.details.0.noports %}
           <td>None</td>
           {% else %}
-          <td>{{ r.details.0.port_info.0.service }}/{{ r.details.0.port_info.0.port }}/{{ r.details.0.port_info.0.state }}</td>
+          {% for p in r.details.0.port_info %}
+          <tr>
+            <td></td>
+            <td>{{ p.service }}/{{ p.port }}/{{ p.state }}</td>
+          </tr>
+          {% endfor %}
           {% endif %}
         </tr>
       {% empty %}

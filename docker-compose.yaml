@@ -1,0 +1,16 @@
+version: '3.2'
+
+services:
+  app:
+    build:
+      context: .
+    environment:
+      AWS_ACCESS_KEY_ID: abc
+      AWS_SECRET_ACCESS_KEY: abc
+      AWS_REGION: us-east-1
+      AWS_ACCOUNT_ID: 012345678901
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: host
