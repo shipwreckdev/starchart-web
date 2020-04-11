@@ -21,7 +21,7 @@ ec2 = boto3.resource(
 
 
 def Instances():
-    # Builds a list of EC2 instances with related information.
+    """Builds a list of EC2 instances with related information."""
 
     instances = []
 
@@ -36,7 +36,7 @@ def Instances():
 
 
 def InstancePrivateIPs():
-    # Builds a list of EC2 instances based on prioritizing private IP addresses.
+    """Builds a list of EC2 instances based on prioritizing private IP addresses."""
 
     instance_scan_list = []
 
@@ -51,7 +51,7 @@ def InstancePrivateIPs():
 
 
 def InstancePublicIPs():
-    # Builds a list of EC2 instances based on prioritizing private IP addresses.
+    """Builds a list of EC2 instances based on prioritizing private IP addresses."""
 
     instance_scan_list = []
 
@@ -65,14 +65,14 @@ def InstancePublicIPs():
     return instance_scan_list
 
 
-# def VPCDetails():
-#    # Builds a list of VPC details.
-#
-#    vpcs = list(ec2.vpcs())
-#    vpc_details_list = []
-#
-#    for v in vpcs:
-#        vpc_details_list.append(dict({"id": v.id, "cidr_block": v.cidr_block}))
-#
-#    return vpc_details_list
-#
+def VPCDetails(vpc_list):
+    """Builds a list of VPC details."""
+    vpc_details_list = []
+
+    for v in vpc_list:
+        vpc = ec2.Vpc(v)
+
+        vpc_details_list.append(
+            dict({"id": vpc.vpc_id, "cidr_block": vpc.cidr_block, "state": vpc.state, "instance_tenancy": vpc.instance_tenancy}))
+
+    return vpc_details_list
