@@ -22,7 +22,9 @@ Starchart provides an easy to use web interface that allows you to collect infor
 
 ![starchart_vpc_info](https://github.com/shipwreckdev/starchart-web/blob/master/assets/sc_vpc_info.png)
 
-You can also run `nmap` scans against your instances.
+You can also run `nmap` scans against your instances. You can pass flags for the scan direclty into the UI.
+
+![starchart_scan_example](https://github.com/shipwreckdev/starchart-web/blob/master/assets/sc_scan_example.png)
 
 Output is provided within the UI.
 
