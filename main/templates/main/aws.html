@@ -15,7 +15,7 @@
   <form action="{% url 'inspect' %}">
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-secondary active">
-        <input type="radio" name="ec2" id="ec2" autocomplete="off"> EC2
+        <input type="radio" name="ec2" id="ec2" autocomplete="off" checked> EC2
       </label>
       <label class="btn btn-secondary">
         <input type="radio" name="vpc" id="vpc" autocomplete="off"> VPCs
@@ -25,7 +25,10 @@
   </form>
 </div>
 
-<br>
+<div class="container">
+  <br>
+  <p><b>{{ instances_count }}</b> instances will be assessed as a part of this scan.</p>
+</div>
 
 <div class="container">
   <form action="{% url 'scan' %}">
@@ -41,7 +44,7 @@
     </div>
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-secondary active">
-        <input type="radio" name="public_ip" id="public_ip" autocomplete="off"> Public
+        <input type="radio" name="public_ip" id="public_ip" autocomplete="off" checked> Public
       </label>
       <label class="btn btn-secondary">
         <input type="radio" name="private_ip" id="private_ip" autocomplete="off"> Private

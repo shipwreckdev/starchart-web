@@ -6,37 +6,77 @@ Starchart is a tool that allows you to identify and scan resources in cloud infr
 
 Under the hood, `boto3` is used to identify qualifying instances in AWS. `python-nmap` is used to facilitate scans.
 
-## Development Notes
-
-In its current iteration, the tool depends on [AWS credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) to provide connectivity and visibility into your account(s).
-
-The following variables should be configured before running the tool for use with `aws`:
-
-* `ACCESS_KEY`
-* `AWS_REGION`
-* `SECRET_KEY`
-
-The long term concept behind the tool is to be able to place it into an AWS account and have it run via Fargate, ECS, EKS, or whatever other chosen method works best. This avoids the requirement for AWS credentials on a local machine.
-
 ## Requirements
 
 * `python3`
 * `django3`
 
-## Building and Running
+## Authenticating to AWS
 
-To start the app:
+Before deploying the tool, you'll need to create a few resources within your AWS account:
 
-* `sudo python3 manage.py runserver`
-* `python3 manage.py migrate`
-* `python3 manage.py createsuperuser`
+* An IAM user called `starchart-web` with programmatic access credentials.
+* An IAM role called `starchart-web` that provides the tool with enough credentials to get EC2 information.
+* An IAM policy for the `starchart-web` user called `starchart-web-assume-role` that allows the user to assume the role `starchart-web`.
 
-You'll need to create a user to access the app since it is gated behind authentication.
+`starchart-web-assume-role` IAM policy:
 
-Running the app requires `sudo` usage to allow nmap to run properly.
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": {
+        "Effect": "Allow",
+        "Action": "sts:AssumeRole",
+        "Resource": "arn:aws:iam::012345678901:role/starchart-web"
+    }
+}
+```
 
-## Update Paths
+`starchart-web` IAM role:
 
-* Dockerize the app and automate the build steps mentioned above.
-* Paginate large results.
-* Work on adding more providers.
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeInstances"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+The trust relationship policy for the role should allow the `starchart-web` user to assume the role:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::012345678901:user/starchart-web"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+Finally, attach the `starchart-web-assume-role` permissions policy to the `starchart-web` user.
+
+Take the programmatic credentials for the `starchart-web` user and make sure they are set as environment variables wherever the tool is being run.
+
+`AWS_ACCESS_KEY_ID`
+`AWS_SECRET_ACCESS_KEY`
+`AWS_REGION`
+`AWS_ACCOUNT_ID`
+
+## Running the App
+
+Use the provided `Dockerfile` and `docker-compose.yaml` file to run the app. Provide the four env vars listed above in `docker-compose.yaml` and run `docker-compose up`.

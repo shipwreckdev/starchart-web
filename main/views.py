@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from .lib import ec2 as ec2
-from .lib import scan as Scanner
 
 
 def about(request):
@@ -8,10 +6,19 @@ def about(request):
 
 
 def aws(request):
-    return render(request, 'main/aws.html')
+    from .lib import ec2 as ec2
+    from .lib import scan as Scanner
+
+    instances = ec2.InstancePublicIPs()
+    instances_count = len(instances)
+
+    return render(request, 'main/aws.html', {'instances': instances, 'instances_count': instances_count})
 
 
 def inspect(request):
+    from .lib import ec2 as ec2
+    from .lib import scan as Scanner
+
     if request.GET.get('ec2'):
         data = ec2.Instances()
         resource_types = 'ec2'
@@ -28,6 +35,9 @@ def main(request):
 
 
 def scan(request):
+    from .lib import ec2 as ec2
+    from .lib import scan as Scanner
+
     if request.GET.get('public_ip'):
         instances = ec2.InstancePublicIPs()
         scan_type = 'public'
