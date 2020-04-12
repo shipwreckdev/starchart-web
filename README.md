@@ -8,7 +8,7 @@ Under the hood, `boto3` is used to identify qualifying instances in AWS. `python
 
 **Be sure** to change the password to the `starchart` user or delete it outright and create your own users before running this anywhere! We generate a default username/password of `starchart/starchart` for initial setup.
 
-Don't run this anywhere until you change this!
+**Don't run this anywhere until you change this!**
 
 ## Requirements
 
