@@ -109,11 +109,35 @@ All of these variables should be set:
 
 ## Running the App
 
-#### Locally
+#### Locally From Source
 
 Use the provided `Dockerfile` and `docker-compose.yaml` file to run the app.
 
 Provide the four env vars listed above in `docker-compose.yaml` and run `docker-compose up`.
+
+#### Docker Standalone
+
+Create a `docker-compose.yaml` file similar to the one provided in this repo, with the exception of simply using the stock `starchart-web` Docker image versus building from local source:
+
+```yaml
+version: '3.2'
+
+services:
+  app:
+    image: shipwreckdev/starchart-web
+    environment:
+      AWS_ACCESS_KEY_ID: A...
+      AWS_SECRET_ACCESS_KEY: fOo...
+      AWS_REGION: us-east-1
+      AWS_ACCOUNT_ID: 012345678901
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+        mode: host
+```
+
+With this file alone, you can run the app locally, assuming there is nothing else running on port `8000`.
 
 #### Inside Your AWS Account
 
@@ -122,3 +146,4 @@ Run the tool in Fargate, ECS, or EKS. You can also optionally run the tool on an
 ## Incoming Updates
 
 * Terraform for creating resources.
+* Trying to run the VPC inspect option with no running instances throws an exception. We're working on this, but there is a dependency on building a list of running instances to generate a list of VPC IDs.
