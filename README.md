@@ -6,6 +6,10 @@ Starchart is a tool that allows you to identify and scan resources in cloud infr
 
 Under the hood, `boto3` is used to identify qualifying instances in AWS. `python-nmap` is used to facilitate scans.
 
+**Be sure** to change the password to the `starchart` user or delete it outright and create your own users before running this anywhere! We generate a default username/password of `starchart/starchart` for initial setup.
+
+Don't run this anywhere until you change this!
+
 ## Requirements
 
 * `python3`
