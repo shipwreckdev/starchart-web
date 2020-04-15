@@ -1,6 +1,6 @@
 # shipwreck / starchart web
 
-![starchart](https://github.com/shipwreckdev/starchart/blob/master/assets/starchart.png)
+![starchart](https://github.com/shipwreckdev/starchart-web/blob/master/assets/starchart.jpg)
 
 Starchart is a tool that allows you to identify and scan resources in cloud infrastructures. This iteration is the web-accessible version that runs in Django.
 
